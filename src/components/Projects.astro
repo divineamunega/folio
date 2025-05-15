@@ -1,0 +1,56 @@
+---
+import ProjectCards from "./Project_Cards.astro";
+---
+
+<div
+	class="text-cool-black dark:text-pale-white flex flex-col items-center justify-center gap-10"
+>
+	<h1 class="text-4xl font-bold">My Work</h1>
+	<p class="text-center text-lg font-medium">
+		A collection of my recent projects showcasing web development and design
+		skills
+	</p>
+
+	<div class="flex w-full flex-wrap items-center justify-center gap-10 px-5">
+		<!-- Cards -->
+		<ProjectCards
+			imageUrl="/projects/project_1.png"
+			title="Jersey.Co"
+			description="An e-commerce site to buy the jerseys built with Astro and Tailwind CSS"
+			liveSiteUrl="https://jerseyco.vercel.app/"
+			githubUrl="https://github.com/divineamunega/jersey_co"
+		/>
+
+		<ProjectCards
+			imageUrl="/projects/project_2.png"
+			title="Plant Palace"
+			description="A site to buy and sell plants built with HTML, CSS, and JS"
+			liveSiteUrl="https://aptechota-plantpalace-cyberminds.vercel.app/"
+			githubUrl="https://github.com/MhideTech/Techwiz-Project-PlantPalace"
+		/>
+
+		<ProjectCards
+			imageUrl="/projects/project_3.png"
+			title="Duo Video Share"
+			description="A simple P2P video sharing app built with React and WebRTC"
+			liveSiteUrl="https://duo-share-v2.vercel.app/"
+			githubUrl=""
+		/>
+
+		<ProjectCards
+			imageUrl="/projects/project_4.png"
+			title="Get Linked Project "
+			description="My submission for the Get Linked Hackathon. Built with Vanilla"
+			liveSiteUrl="https://get-linked.netlify.app/"
+			githubUrl="https://github.com/divineamunega/getlinked-tech-hackathon"
+		/>
+
+		<ProjectCards
+			imageUrl="/projects/project_5.png"
+			title="News Portal"
+			description="A fullstack news portal built with React, Node.js, and MongoDB"
+			liveSiteUrl="https://acu-news-portal.vercel.app/"
+			githubUrl=""
+		/>
+	</div>
+</div>

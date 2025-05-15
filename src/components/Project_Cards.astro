@@ -1,0 +1,47 @@
+---
+// Define the props interface
+interface Props {
+	imageUrl: string;
+	title: string;
+	description: string;
+	githubUrl: string;
+	liveSiteUrl: string;
+}
+
+// Destructure the props
+const { imageUrl, title, description, githubUrl, liveSiteUrl } = Astro.props;
+---
+
+<div
+	class="flex w-xs flex-col gap-4 rounded-lg bg-white p-5 shadow-md shadow-black/10 dark:bg-black"
+>
+	<div>
+		<img src={imageUrl} alt={title} />
+	</div>
+	<div class="flex flex-col gap-2">
+		<p class="text-3xl font-bold">{title}</p>
+		<p class="text-1xl">
+			{description}
+		</p>
+
+		<!-- Project Links -->
+		<div class="flex items-center justify-between">
+			<a
+				href={liveSiteUrl}
+				class="cursor-pointer rounded-sm border-2 border-black bg-[#ffc965] px-5 py-2 text-lg font-medium text-black transition-colors duration-300 hover:bg-white hover:text-black"
+			>
+				live site
+			</a>
+			{
+				githubUrl ? (
+					<a
+						href={githubUrl}
+						class="cursor-pointer rounded-sm border-2 border-black bg-[#ffc965] px-5 py-2 text-lg font-medium text-black transition-colors duration-300 hover:bg-white hover:text-black"
+					>
+						github
+					</a>
+				) : null
+			}
+		</div>
+	</div>
+</div>

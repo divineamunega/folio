@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --font-roboto: "Roboto", sans-serif;
+  --color-pale-white: #d8d8f6;
+  --color-peach: #ffc965;
+  --color-cool-black: #1d1e18;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.text-stroke {
+  -webkit-text-stroke: 5px black;
+}
+.text-stroke:hover {
+  color: white;
+
+  color: #ffc965;
+}

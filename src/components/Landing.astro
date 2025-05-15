@@ -1,0 +1,80 @@
+---
+import Navbar from "./Navbar.astro";
+---
+
+<div class="sticky top-0 h-[140dvh] bg-white dark:bg-black">
+	<Navbar />
+
+	<div class="relative">
+		<div class="flex items-center justify-center">
+			<img src="/person.png" class="h-30" alt="" />
+		</div>
+		<div
+			class="landing font-roboto flex w-full flex-col items-center justify-between gap-5 text-black"
+		>
+			<h1
+				class="font-roboto xl:text-10xl dark:text-pale-white text-center text-4xl font-black text-wrap text-black transition-colors duration-500 sm:text-6xl lg:text-7xl"
+			>
+				Fullstack Developer
+			</h1>
+			<p
+				class="reveal dark:text-pale-white px-4 text-xl font-medium text-black sm:text-4xl md:px-10 lg:px-14 lg:text-4xl"
+			>
+				A creative fullstack developer who builds fast, secure, and scalable web
+				apps—turning complex problems into clean, efficient systems.
+			</p>
+
+			<a
+				href="mailto:divineamunega@gmail.com?subject=Hiring Inquiry&body=Hi%20Divine%2C%0D%0A%0D%0AI%20came%20across%20your%20profile%20and%20I'm%20interested%20in%20discussing%20a%20potential%20job%20opportunity.%0D%0A%0D%0ARegards%2C%0D%0A[Your Name]"
+				class="dark:bg-pale-white bg-peach mx-auto block cursor-pointer rounded-sm border-2 border-black px-8 py-3 text-xl font-medium text-black transition-colors duration-300 hover:bg-white hover:text-black sm:mt-10 sm:px-10 sm:py-4 md:text-2xl hover:dark:bg-[#ffc965]"
+			>
+				Hire Me
+			</a>
+		</div>
+	</div>
+</div>
+
+<script>
+	import gsap from "gsap";
+	import ScrollTrigger from "gsap/src/ScrollTrigger";
+	import Lenis from "lenis";
+	import SplitText from "gsap/src/SplitText";
+
+	// Initialize Lenis for smooth scrolling
+	const lenis = new Lenis({ smoothWheel: true });
+
+	// Register the ScrollTrigger plugin with GSAP
+	gsap.registerPlugin(ScrollTrigger);
+
+	// Register the SplitText plugin with GSAP
+	gsap.registerPlugin(SplitText);
+
+	const splitType = document.querySelector(".reveal");
+
+	const text = new SplitText(splitType, {
+		type: "chars",
+	});
+
+	gsap.from(text.chars, {
+		scrollTrigger: {
+			trigger: splitType,
+			start: "top 70%",
+			end: "top 0%",
+			scrub: true,
+			markers: false,
+		},
+		opacity: 0.1,
+		stagger: 0.1,
+	});
+
+	function raf(time: number) {
+		lenis.raf(time);
+		requestAnimationFrame(raf);
+	}
+
+	requestAnimationFrame(raf);
+
+	// lenis.on('scroll', (e) => {
+	//     console.log(e);
+	// })
+</script>
