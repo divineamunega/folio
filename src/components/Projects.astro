@@ -3,15 +3,17 @@ import ProjectCards from "./Project_Cards.astro";
 ---
 
 <div
-	class="text-cool-black dark:text-pale-white flex flex-col items-center justify-center gap-10"
+	class="outer-container text-cool-black dark:text-pale-white relative flex min-h-screen w-screen flex-col gap-10 overflow-hidden md:pt-20"
 >
-	<h1 class="text-4xl font-bold">My Work</h1>
-	<p class="text-center text-lg font-medium">
+	<h1 class="text-center text-4xl font-bold">My Work</h1>
+	<p class="px-10 text-center text-lg font-medium">
 		A collection of my recent projects showcasing web development and design
 		skills
 	</p>
 
-	<div class="flex w-full flex-wrap items-center justify-center gap-10 px-5">
+	<div
+		class="projects flex flex-wrap items-center justify-center gap-20 self-start px-10 sm:w-full md:w-max md:flex-nowrap md:px-20"
+	>
 		<!-- Cards -->
 		<ProjectCards
 			imageUrl="/projects/project_1.png"

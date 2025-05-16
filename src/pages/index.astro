@@ -50,13 +50,15 @@ import Footer from "../components/Footer.astro";
 			content="Creative Software Developer from Nigeria specialized in modern web development"
 		/>
 	</head>
-	<body class="dark transition-all duration-500">
+	<body class="overflow-x-hidden transition-all duration-500">
 		<Landing />
 
 		<div
 			class="font-roboto dark:bg-cool-black relative z-10 flex w-full flex-col items-center justify-center gap-30 bg-[#f5f5f5] pt-30"
 		>
-			<Projects />
+			<div>
+				<Projects />
+			</div>
 			<Skills />
 			<Contact />
 			<Footer />

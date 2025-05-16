@@ -1,5 +1,6 @@
 ---
 import Navbar from "./Navbar.astro";
+import { MoveDown } from "lucide-react";
 ---
 
 <div class="sticky top-0 h-[140dvh] bg-white dark:bg-black">
@@ -30,11 +31,18 @@ import Navbar from "./Navbar.astro";
 			>
 				Hire Me
 			</a>
+
+			<div
+				class="flex flex-col items-center justify-center gap-10 pt-10 md:hidden"
+			>
+				<p class="text-cool-black dark:text-pale-white">Scroll</p>
+				<MoveDown className="text-cool-black animate-bounce dark:text-white" />
+			</div>
 		</div>
 	</div>
 </div>
 
-<script>
+<!-- <script>
 	import gsap from "gsap";
 	import ScrollTrigger from "gsap/src/ScrollTrigger";
 	import Lenis from "lenis";
@@ -73,8 +81,65 @@ import Navbar from "./Navbar.astro";
 	}
 
 	requestAnimationFrame(raf);
+</script> -->
 
-	// lenis.on('scroll', (e) => {
-	//     console.log(e);
-	// })
+<script>
+	import gsap from "gsap";
+	import ScrollTrigger from "gsap/ScrollTrigger";
+	import SplitText from "gsap/SplitText";
+	import Lenis from "lenis";
+
+	gsap.registerPlugin(ScrollTrigger, SplitText);
+
+	const lenis = new Lenis({ smoothWheel: true, duration: 1.2 });
+
+	function raf(time: number) {
+		lenis.raf(time);
+		requestAnimationFrame(raf);
+	}
+	requestAnimationFrame(raf);
+
+	lenis.on("scroll", ScrollTrigger.update);
+	gsap.ticker.lagSmoothing(0);
+
+	// SplitText animation
+	const splitType = document.querySelector(".reveal");
+	if (splitType) {
+		const text = new SplitText(splitType, { type: "chars" });
+
+		gsap.from(text.chars, {
+			scrollTrigger: {
+				trigger: splitType,
+				start: "top 70%",
+				end: "top 0%",
+				scrub: true,
+			},
+			opacity: 0.1,
+			stagger: 0.1,
+		});
+	}
+
+	if (window.innerWidth >= 768) {
+		const projectsContainer = document.querySelector(".projects");
+		const outerContainer = document.querySelector(".outer-container");
+
+		if (projectsContainer && outerContainer) {
+			const scrollWidth = projectsContainer.scrollWidth;
+			const clientWidth = window.innerWidth;
+			const scrollDistance = scrollWidth - clientWidth;
+
+			gsap.to(projectsContainer, {
+				x: -scrollDistance,
+				ease: "none",
+				scrollTrigger: {
+					trigger: outerContainer,
+					start: "top top",
+					end: () => `+=${scrollDistance}`,
+					scrub: true,
+					pin: true,
+					invalidateOnRefresh: true,
+				},
+			});
+		}
+	}
 </script>

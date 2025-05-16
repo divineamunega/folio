@@ -4,20 +4,25 @@ import { Sun } from "lucide-react";
 ---
 
 <header class="flex w-full items-center justify-center py-8 sm:px-28">
-	<div class="flex w-full items-center justify-between rounded-4xl px-8 py-5">
+	<div
+		class="flex w-full items-center justify-between rounded-4xl px-5 py-3 md:py-5"
+	>
 		<button class="btn-dark cursor-pointer">
 			<Moon className="h-10 w-10 dark:hidden dark:text-white" />
 			<Sun className="hidden dark:block dark:text-white" />
 		</button>
 
-		<h2 class="dark:text-pale-white text-cool-black font-bold md:text-2xl">
+		<!-- May be removed -->
+		<!-- <h2
+			class="dark:text-pale-white text-cool-black text-center font-bold md:text-2xl"
+		>
 			Divinne
-		</h2>
+		</h2> -->
 
 		<a
 			href="https://docs.google.com/document/d/1XrU7rW1uudym6_QTTDDnjun4rvh-2XfjRfOTb7geyQ0/edit?pli=1&tab=t.0#heading=h.y7d3xdxnr44m"
 			target="_blank"
-			class="dark:bg-pale-white dark:hover:bg-peach bg-peach hover:bg-pale-white border-cool-black cursor-pointer border-2 px-3 py-3 transition-colors duration-300"
+			class="dark:bg-pale-white dark:hover:bg-peach bg-peach hover:bg-pale-white border-cool-black cursor-pointer border-2 px-2 py-2 transition-colors duration-300"
 		>
 			Resume
 		</a>
