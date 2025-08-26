@@ -12,9 +12,75 @@ import Confetti from "../components/Confetti.jsx";
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/person.png" />
+		<link rel="icon" type="image/png" href="/person.png" />
 		<meta name="viewport" content="width=device-width" />
 
+		<!-- Primary SEO -->
+		<title>Fullstack Developer in Nigeria | Divinne’s Creative Portfolio</title>
+		<meta
+			name="description"
+			content="Divinne is a Nigerian Fullstack Developer specializing in fast, secure, and scalable web applications. Explore creative projects, technical skills, and innovative digital solutions."
+		/>
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://yourdomain.com/" />
+		<meta
+			property="og:title"
+			content="Fullstack Developer in Nigeria | Divinne’s Creative Portfolio"
+		/>
+		<meta
+			property="og:description"
+			content="Creative Fullstack Developer from Nigeria, building secure and scalable applications. Explore projects, skills, and ways to hire Divinne."
+		/>
+		<meta property="og:image" content="https://yourdomain.com/preview.png" />
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content="https://yourdomain.com/" />
+		<meta
+			name="twitter:title"
+			content="Fullstack Developer in Nigeria | Divinne’s Creative Portfolio"
+		/>
+		<meta
+			name="twitter:description"
+			content="Creative Fullstack Developer from Nigeria, building secure and scalable applications. Explore projects, skills, and ways to hire Divinne."
+		/>
+		<meta name="twitter:image" content="https://yourdomain.com/preview.png" />
+
+		<!-- Canonical -->
+		<link rel="canonical" href="https://yourdomain.com/" />
+
+		<!-- Schema.org JSON-LD (Structured Data) -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "Person",
+				"name": "Divinne Amunega",
+				"jobTitle": "Fullstack Developer",
+				"url": "https://yourdomain.com",
+				// "image": "https://yourdomain.com/person.png",
+				"sameAs": [
+					"https://github.com/divineamunega",
+					"https://linkedin.com/in/divinne",
+					"https://twitter.com/div_x_"
+				],
+				"knowsAbout": [
+					"Fullstack Development",
+					"JavaScript",
+					"React",
+					"Node.js",
+					"Web Security",
+					"UI/UX Design"
+				]
+				// "worksFor": {
+				// 	"@type": "Organization",
+				// 	"name": "Idealabs"
+				// }
+			}
+		</script>
+
+		<!-- Fonts & Icons -->
 		<link
 			rel="stylesheet"
 			type="text/css"
@@ -22,37 +88,9 @@ import Confetti from "../components/Confetti.jsx";
 		/>
 
 		<meta name="generator" content={Astro.generator} />
-		<title>Divinne | Creative Software Developer Portfolio</title>
-		<meta
-			name="description"
-			content="Divinne - Creative Software Developer from Nigeria. Specialized in building modern web applications and innovative digital solutions."
-		/>
-		<meta
-			name="keywords"
-			content="Software Developer, Nigerian Developer, Creative Developer, Software Engineer, Web Developer, Frontend Developer, Portfolio, Tech Nigeria"
-		/>
-
-		<meta
-			property="og:title"
-			content="Divinne | Creative Software Developer Portfolio"
-		/>
-		<meta
-			property="og:description"
-			content="Creative Software Developer from Nigeria specialized in modern web development"
-		/>
-		<meta property="og:type" content="website" />
-
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta
-			name="twitter:title"
-			content="Divinne | Creative Software Developer Portfolio"
-		/>
-		<meta
-			name="twitter:description"
-			content="Creative Software Developer from Nigeria specialized in modern web development"
-		/>
 	</head>
-	<body class="overflow-x-hidden transition-all duration-500">
+
+	<body class="dark overflow-x-hidden transition-all duration-500">
 		<Analytics />
 		<Confetti client:only />
 		<Landing />

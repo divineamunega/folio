@@ -19,7 +19,7 @@ import { MoveDown } from "lucide-react";
 				Fullstack Developer
 			</h1>
 			<p
-				class="reveal dark:text-pale-white px-4 text-xl font-medium text-black sm:text-4xl md:px-10 lg:px-14 lg:text-4xl"
+				class="reveal dark:text-pale-white px-4 text-center text-xl font-medium text-black sm:text-4xl md:px-10 lg:px-14 lg:text-4xl"
 			>
 				A creative fullstack developer who builds fast, secure, and scalable web
 				apps—turning complex problems into clean, efficient systems.
@@ -42,47 +42,6 @@ import { MoveDown } from "lucide-react";
 	</div>
 </div>
 
-<!-- <script>
-	import gsap from "gsap";
-	import ScrollTrigger from "gsap/src/ScrollTrigger";
-	import Lenis from "lenis";
-	import SplitText from "gsap/src/SplitText";
-
-	// Initialize Lenis for smooth scrolling
-	const lenis = new Lenis({ smoothWheel: true });
-
-	// Register the ScrollTrigger plugin with GSAP
-	gsap.registerPlugin(ScrollTrigger);
-
-	// Register the SplitText plugin with GSAP
-	gsap.registerPlugin(SplitText);
-
-	const splitType = document.querySelector(".reveal");
-
-	const text = new SplitText(splitType, {
-		type: "chars",
-	});
-
-	gsap.from(text.chars, {
-		scrollTrigger: {
-			trigger: splitType,
-			start: "top 70%",
-			end: "top 0%",
-			scrub: true,
-			markers: false,
-		},
-		opacity: 0.1,
-		stagger: 0.1,
-	});
-
-	function raf(time: number) {
-		lenis.raf(time);
-		requestAnimationFrame(raf);
-	}
-
-	requestAnimationFrame(raf);
-</script> -->
-
 <script>
 	import gsap from "gsap";
 	import ScrollTrigger from "gsap/ScrollTrigger";
@@ -91,7 +50,12 @@ import { MoveDown } from "lucide-react";
 
 	gsap.registerPlugin(ScrollTrigger, SplitText);
 
-	const lenis = new Lenis({ smoothWheel: true, duration: 1.2 });
+	const lenis = new Lenis({
+		smoothWheel: true,
+		duration: 1.6,
+		easing: (t) => t * (2 - t),
+		wheelMultiplier: 0.8,
+	});
 
 	function raf(time: number) {
 		lenis.raf(time);
@@ -115,7 +79,7 @@ import { MoveDown } from "lucide-react";
 				scrub: true,
 			},
 			opacity: 0.1,
-			stagger: 0.1,
+			stagger: 0.05,
 		});
 	}
 
@@ -134,7 +98,7 @@ import { MoveDown } from "lucide-react";
 				scrollTrigger: {
 					trigger: outerContainer,
 					start: "top top",
-					end: () => `+=${scrollDistance}`,
+					end: () => `+=${scrollDistance * 2}`,
 					scrub: true,
 					pin: true,
 					invalidateOnRefresh: true,
