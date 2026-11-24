@@ -1,6 +1,6 @@
 # folio
 
-Source for [divinne.xyz](https://divinne.xyz), the portfolio of Divinne Amunega, a software engineer in Lagos building backend and AI-integrated systems. I'm currently building [PhishCore](https://phishcore.com).
+Source for [folio.divinne.workers.dev](https://folio.divinne.workers.dev), the portfolio of Divinne Amunega, a software engineer in Lagos building backend and AI-integrated systems. I'm currently building [PhishCore](https://phishcore.com).
 
 ## Stack
 
@@ -43,12 +43,9 @@ Most edits are data, not markup:
 | `src/config/site.ts`       | Name, title, meta description, social links, SEO  |
 | `src/data/projects.ts`     | Projects and their display order (`projectOrder`) |
 | `src/data/talks.ts`        | Conference talks for the Speaking section         |
-| `src/data/testimonials.ts` | References. Empty until real ones are added       |
 | `public/projects/`         | Project screenshots                               |
 
 Each entry in `projects.ts` generates a page at `/projects/<slug>`.
-
-Testimonials are deliberately empty. Only add a reference from a real person who agreed to give one and can be contacted. To show the section again, re-add `<Testimonials />` in `src/pages/index.astro`.
 
 ## Deploying
 

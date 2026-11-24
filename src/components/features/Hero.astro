@@ -257,28 +257,7 @@ const mailtoLink = `mailto:${siteConfig.author.email}?subject=Project%20Inquiry&
       );
     }
 
-    // 5. Testimonials List Stagger Reveal
-    const reviewsContainer = document.querySelector(".reviews-list");
-    if (reviewsContainer) {
-      gsap.fromTo(
-        ".testimonial-item",
-        { opacity: 0, y: 30 },
-        {
-          scrollTrigger: {
-            trigger: reviewsContainer,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power3.out",
-        },
-      );
-    }
-
-    // 6. Contact Items Stagger Reveal
+    // 5. Contact Items Stagger Reveal
     const contactContainer = document.querySelector("#contact .links-list");
     if (contactContainer) {
       gsap.fromTo(

@@ -36,7 +36,7 @@ export const projects = {
     description:
       "One public site for a gaming venue — product and tournament requests, leaderboards, and a protected admin workspace. The hard part was letting gamers signal interest without a request ever reading as a confirmed purchase or tournament spot.",
     collaborator: "@BrahimView",
-    collaboratorUrl: "https://my-portfolio-v2-one-sage.vercel.app/",
+    collaboratorUrl: "",
     longDescription:
       "ClashGrid gives a gaming venue one public site for products, tournament entries, leaderboards, and local competition. Gamers can submit a product or session request and continue with venue staff on WhatsApp for confirmation. A protected admin workspace lets staff manage requests, products, tournaments, players, rankings, and public results without a developer.",
     tags: ["Astro", "Supabase", "React"],
@@ -67,11 +67,11 @@ export const projects = {
     description:
       "Marketing site for a Nigerian cleaning and facility-care company, spanning residential, commercial, fumigation, and post-construction work. The challenge was making a wide service range scannable without hiding the detail people need before requesting a quote.",
     collaborator: "@BrahimView",
-    collaboratorUrl: "https://my-portfolio-v2-one-sage.vercel.app/",
+    collaboratorUrl: "",
     longDescription:
       "Everbright helps households, offices, property managers, and event venues find cleaning and facility-care services. The site covers residential and commercial cleaning, sanitization, fumigation, move-in and move-out work, and post-construction care. We built clear service pages, direct quote and WhatsApp paths, responsive navigation, dark mode, and accessible interactions for people booking from any device.",
     tags: ["React", "Vite", "Tailwind CSS"],
-    liveUrl: "https://everbright-nu.vercel.app/",
+    liveUrl: "",
     imageUrl: "/projects/everbright.png",
     videoUrl: "",
     features: [

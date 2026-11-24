@@ -146,14 +146,18 @@ const collaboration =
           collaboration && (
             <p class="text-text-muted mt-3 text-sm">
               Co-built with{" "}
-              <a
-                href={collaboration.url}
-                target="_blank"
-                rel="noreferrer"
-                class="text-text-main decoration-accent hover:text-accent font-medium underline underline-offset-4 transition-colors"
-              >
-                {collaboration.name}
-              </a>
+              {collaboration.url ? (
+                <a
+                  href={collaboration.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="text-text-main decoration-accent hover:text-accent font-medium underline underline-offset-4 transition-colors"
+                >
+                  {collaboration.name}
+                </a>
+              ) : (
+                <span class="text-text-main font-medium">{collaboration.name}</span>
+              )}
             </p>
           )
         }

@@ -9,8 +9,8 @@ export const siteConfig = {
     "Divinne Amunega - Software Engineer Nigeria | Backend, AI, TypeScript",
   description:
     "Software engineer in Lagos, Nigeria building backend and AI-integrated systems in TypeScript and Node.js — API services, model routing, and data pipelines over PostgreSQL and Redis. Currently building PhishCore, a human risk management platform. Available for backend, AI, and full-stack engineering roles, remote or on-site.",
-  url: "https://divinne.xyz",
-  ogImage: "https://divinne.xyz/og-image.png",
+  url: "https://folio.divinne.workers.dev",
+  ogImage: "https://folio.divinne.workers.dev/og-image.png",
   author: {
     name: "Divinne Amunega",
     alternateName: "Divine Amunega",

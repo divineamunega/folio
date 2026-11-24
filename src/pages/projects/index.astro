@@ -83,13 +83,17 @@ const description =
                 {collaboration && (
                   <p class="collaboration">
                     Co-built with{" "}
-                    <a
-                      href={collaboration.url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {collaboration.name}
-                    </a>
+                    {collaboration.url ? (
+                      <a
+                        href={collaboration.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {collaboration.name}
+                      </a>
+                    ) : (
+                      collaboration.name
+                    )}
                   </p>
                 )}
 
