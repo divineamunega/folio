@@ -25,3 +25,7 @@ pnpm-debug.log*
 .vercel/
 # stray task output (pptx generation workspace, not part of the site)
 output/
+
+# local agent/design tooling, not part of the site
+.agents/
+.impeccable/
