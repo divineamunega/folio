@@ -120,6 +120,37 @@ export const projects = {
     ],
     category: "Business finance software",
   },
+  praisejah: {
+    title: "PraiseJah HealthCare",
+    year: "2026",
+    description:
+      "An electronic medical records system: SOAP notes, a real-time patient queue, vitals, lab orders, and prescriptions across seven clinical roles. The hard part was concurrent editing — notes are versioned, so a stale session can't silently overwrite another clinician's work.",
+    longDescription:
+      "PraiseJah is an EMR built for a clinic's daily flow. Secretaries and nurses check patients in and record vitals, the doctor's queue updates live over WebSockets, and lab results notify the requesting doctor the moment they are ready. Doctors document encounters as SOAP notes with auto-save, order labs, and write prescriptions. Access is split across seven roles, from super admin to pharmacist, and an audit log records clinical and administrative actions. It runs as a NestJS API with Prisma over PostgreSQL, Redis and BullMQ for background email jobs, and a React 19 front end, deployed with Docker Compose behind Nginx.",
+    tags: ["NestJS", "PostgreSQL", "React", "Prisma", "Redis", "BullMQ"],
+    liveUrl: "",
+    githubUrl: "https://github.com/divineamunega/PraiseJah-HealthCare",
+    imageUrl: "/projects/praisejah.png",
+    videoUrl: "",
+    features: [
+      "Real-time patient queue over WebSockets",
+      "SOAP encounter notes with auto-save and version-conflict detection",
+      "Vitals, lab orders, and prescriptions",
+      "Role-based access for seven clinical and admin roles",
+      "Audit log of clinical and administrative actions",
+      "Docker Compose deployment behind Nginx",
+    ],
+    challenges:
+      "Several people touch the same patient at once: a nurse records vitals while the doctor writes notes and the lab posts results. Clinical notes carry a version number, and an update made against an old version is rejected with a conflict instead of overwriting newer work. Queue and visit changes are pushed to every connected client over WebSockets, so each role sees the same state without refreshing.",
+    seoKeywords: [
+      "electronic medical records system",
+      "EMR software developer",
+      "healthcare software Nigeria",
+      "NestJS developer Nigeria",
+      "real-time clinical queue",
+    ],
+    category: "Healthcare Software",
+  },
   "jersey-co": {
     title: "Jersey.Co",
     year: "2025",
@@ -315,6 +346,7 @@ export const projects = {
 export const projectOrder = [
   "phishcore",
   "awaledger",
+  "praisejah",
   "clashgrid",
   "everbright",
   "formfillr",
