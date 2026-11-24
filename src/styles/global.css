@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+:root {
+  /* Perceptually uniform OKLCH Colors - Warm Tinted Neutrals (Luxury/Refined Minimal style) */
+  --color-bg: oklch(0.985 0.005 60); /* Warm alabaster/sand light background */
+  --color-text-primary: oklch(0.16 0.008 60); /* Warm near-black primary text */
+  --color-text-secondary: oklch(
+    0.45 0.01 60
+  ); /* Soft warm gray secondary text */
+  --color-border: oklch(0.91 0.005 60); /* Light warm card/section border */
+  --color-card-bg: oklch(1 0 0); /* Pure card surface */
+}
+
+.dark {
+  /* Perceptually uniform OKLCH Colors - Cool Tinted Charcoal (Premium Tech style) */
+  --color-bg: oklch(0.13 0.008 250); /* Rich dark charcoal-blue background */
+  --color-text-primary: oklch(
+    0.93 0.005 250
+  ); /* Crisp off-white primary text */
+  --color-text-secondary: oklch(
+    0.65 0.008 250
+  ); /* Muted slate-gray secondary text */
+  --color-border: oklch(0.21 0.01 250); /* Subtle dark border */
+  --color-card-bg: oklch(
+    0.16 0.008 250
+  ); /* Slightly lighter charcoal surface */
+}
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-roboto:
+    "Plus Jakarta Sans", sans-serif; /* Fallback for existing components */
+
+  --color-pale-white: #d8d8f6;
+  --color-peach: #ffc965;
+  --color-cool-black: #1d1e18;
+  --color-accent: #6366f1;
+  --color-accent-light: #818cf8;
+
+  /* Semantic tokens mapped to CSS properties */
+  --color-bg-base: var(--color-bg);
+  --color-text-main: var(--color-text-primary);
+  --color-text-muted: var(--color-text-secondary);
+  --color-border-default: var(--color-border);
+  --color-surface-card: var(--color-card-bg);
+}
+
+/* Global transitions for theme toggles (Micro-interaction) */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  transition:
+    background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Focus Ring for Keyboard Access */
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+/* Custom Scrollbar - Elegant & Minimalist */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.03);
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: var(--color-accent-light);
+}
+
+/* Dark mode scrollbar */
+.dark * {
+  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.03);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid transparent;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+.dark ::-webkit-scrollbar-thumb:active {
+  background: var(--color-accent-light);
+}

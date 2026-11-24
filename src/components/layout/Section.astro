@@ -1,0 +1,41 @@
+---
+/**
+ * Section Component
+ * Consistent section wrapper with spacing and borders using semantic design tokens
+ */
+
+interface Props {
+	id?: string;
+	class?: string;
+	noBorder?: boolean;
+	spacing?: "sm" | "md" | "lg";
+	ariaLabel?: string;
+	children?: any;
+}
+
+const {
+	id,
+	class: className = "",
+	noBorder = false,
+	spacing = "md",
+	ariaLabel,
+} = Astro.props;
+
+const spacingMap = {
+	sm: "py-12 md:py-16",
+	md: "py-20 md:py-32",
+	lg: "py-32 md:py-40",
+};
+
+const borderClass = noBorder
+	? ""
+	: "border-t border-border-default";
+
+const classes = `w-full bg-bg-base ${spacingMap[spacing]} ${borderClass} ${className}`;
+---
+
+<section id={id} class={classes} aria-label={ariaLabel}>
+	<div class="mx-auto max-w-6xl px-6">
+		<slot />
+	</div>
+</section>

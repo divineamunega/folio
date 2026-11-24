@@ -1,0 +1,26 @@
+---
+/**
+ * Footer Component
+ * Site footer with copyright and attribution using semantic tokens
+ */
+
+import { siteConfig } from "../../config/site";
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer
+	class="w-full border-t border-border-default bg-bg-base py-12"
+>
+	<div
+		class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 md:flex-row"
+	>
+		<p class="font-mono text-sm text-text-muted">
+			© {currentYear}
+			{siteConfig.author.name}
+		</p>
+		<p class="font-mono text-sm text-text-muted">
+			Built with Astro
+		</p>
+	</div>
+</footer>

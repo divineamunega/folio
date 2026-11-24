@@ -1,0 +1,378 @@
+---
+import BaseLayout from "../../components/layout/BaseLayout.astro";
+import Footer from "../../components/layout/Footer.astro";
+import Navbar from "../../components/layout/Navbar.astro";
+import Badge from "../../components/ui/Badge.astro";
+import Button from "../../components/ui/Button.astro";
+import { orderedProjects } from "../../data/projects";
+
+const title = "Projects | Divine Amunega";
+const description =
+  "A closer look at product work, business platforms, experiments, and the decisions behind them.";
+---
+
+<BaseLayout title={title} description={description}>
+  <Navbar />
+
+  <main class="archive">
+    <header class="archive-intro">
+      <p class="eyebrow">Selected work</p>
+      <h1>Projects with room for the details.</h1>
+      <p>
+        Product work, business platforms, and experiments—ordered by their
+        current relevance.
+      </p>
+    </header>
+
+    <section class="project-list" aria-label="All projects">
+      {
+        orderedProjects.map((project, index) => {
+          const collaboration =
+            "collaborator" in project && "collaboratorUrl" in project
+              ? { name: project.collaborator, url: project.collaboratorUrl }
+              : null;
+
+          return (
+            <article
+              class:list={[
+                "project-entry",
+                { "project-entry--lead": index === 0 },
+              ]}
+            >
+              <div class="project-meta">
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <span>{project.year}</span>
+              </div>
+
+              <div class="project-image-wrap">
+                <img
+                  src={project.imageUrl}
+                  alt={`${project.title} project screenshot`}
+                  width="1200"
+                  height="675"
+                  loading={index < 2 ? "eager" : "lazy"}
+                  decoding="async"
+                />
+              </div>
+
+              <div class="project-content">
+                <div class="project-heading">
+                  <div>
+                    <p class="project-category">{project.category}</p>
+                    <h2>
+                      <a href={`/projects/${project.slug}`}>{project.title}</a>
+                    </h2>
+                  </div>
+                  <div class="project-actions">
+                    <a href={`/projects/${project.slug}`}>
+                      Case study <span aria-hidden="true">↗</span>
+                    </a>
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Live site <span aria-hidden="true">↗</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                <p class="project-summary">{project.description}</p>
+                {collaboration && (
+                  <p class="collaboration">
+                    Co-built with{" "}
+                    <a
+                      href={collaboration.url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {collaboration.name}
+                    </a>
+                  </p>
+                )}
+
+                <div
+                  class="project-tags"
+                  aria-label={`${project.title} technologies`}
+                >
+                  {project.tags.map((tag) => (
+                    <Badge size="sm">{tag}</Badge>
+                  ))}
+                </div>
+
+                <div class="project-detail-grid">
+                  <div>
+                    <h3>What it is</h3>
+                    <p>{project.longDescription}</p>
+                  </div>
+                  <div>
+                    <h3>What it includes</h3>
+                    <ul>
+                      {project.features.map((feature) => (
+                        <li>{feature}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="project-challenge">
+                  <h3>Challenge &amp; approach</h3>
+                  <p>{project.challenges}</p>
+                </div>
+
+                <div class="project-buttons">
+                  <Button
+                    href={`/projects/${project.slug}`}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    Read case study
+                  </Button>
+                  {project.liveUrl && (
+                    <Button href={project.liveUrl} external size="sm">
+                      Visit project
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </article>
+          );
+        })
+      }
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .archive {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 10rem 1.5rem 7rem;
+  }
+  .archive-intro {
+    max-width: 47rem;
+    margin-bottom: 6rem;
+  }
+  .eyebrow,
+  .project-meta,
+  .project-category {
+    font-family: monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .eyebrow {
+    color: var(--color-accent);
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+  }
+  h1 {
+    max-width: 45rem;
+    margin: 0;
+    color: var(--color-text-main);
+    font-size: clamp(2.6rem, 7vw, 5.75rem);
+    line-height: 0.98;
+    letter-spacing: -0.065em;
+    font-weight: 750;
+  }
+  .archive-intro > p:last-child {
+    max-width: 36rem;
+    margin: 1.75rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+  .project-list {
+    border-top: 1px solid var(--color-border-default);
+  }
+  .project-entry {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 2.5rem;
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--color-border-default);
+  }
+  .project-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    color: var(--color-text-muted);
+    padding-top: 0.25rem;
+  }
+  .project-image-wrap {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--color-surface-card);
+    border: 1px solid var(--color-border-default);
+  }
+  .project-image-wrap img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .project-entry:hover .project-image-wrap img {
+    transform: scale(1.025);
+  }
+  .project-content {
+    min-width: 0;
+  }
+  .project-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .project-category {
+    margin: 0 0 0.5rem;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+  h2 {
+    margin: 0;
+    font-size: clamp(1.65rem, 3vw, 2.45rem);
+    line-height: 1;
+    letter-spacing: -0.055em;
+  }
+  h2 a {
+    color: var(--color-text-main);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  h2 a:hover {
+    color: var(--color-accent);
+  }
+  .project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.9rem;
+    padding-top: 0.35rem;
+    white-space: nowrap;
+  }
+  .project-actions a,
+  .collaboration a {
+    color: var(--color-text-main);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+    text-underline-offset: 0.3rem;
+  }
+  .project-summary {
+    margin: 1.35rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  .collaboration {
+    margin: 0.8rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0 0;
+  }
+  .project-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.25rem;
+    margin-top: 2.25rem;
+    padding-top: 2.25rem;
+    border-top: 1px solid var(--color-border-default);
+  }
+  h3 {
+    margin: 0 0 0.75rem;
+    color: var(--color-text-main);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .project-detail-grid p,
+  .project-challenge p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    position: relative;
+    padding: 0 0 0.6rem 1.1rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+  li::before {
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    content: "—";
+  }
+  .project-challenge {
+    margin-top: 2.25rem;
+  }
+  .project-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+  }
+  @media (max-width: 900px) {
+    .project-entry {
+      grid-template-columns: 3rem minmax(0, 1fr);
+    }
+    .project-image-wrap {
+      grid-column: 2;
+    }
+    .project-content {
+      grid-column: 2;
+    }
+  }
+  @media (max-width: 600px) {
+    .archive {
+      padding-top: 8rem;
+      padding-bottom: 4.5rem;
+    }
+    .archive-intro {
+      margin-bottom: 4rem;
+    }
+    .project-entry {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 2.5rem 0;
+    }
+    .project-meta {
+      flex-direction: row;
+      grid-row: 1;
+    }
+    .project-image-wrap,
+    .project-content {
+      grid-column: 1;
+    }
+    .project-heading {
+      display: block;
+    }
+    .project-actions {
+      justify-content: flex-start;
+      margin-top: 1rem;
+      padding-top: 0;
+    }
+    .project-detail-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+  }
+</style>

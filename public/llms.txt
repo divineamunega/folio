@@ -1,0 +1,22 @@
+# Folio Portfolio
+> Single-page portfolio for Divinne Amunega, Nigerian fullstack developer (Lagos-based) building fast, secure web apps with Astro + React + Tailwind CSS, GSAP animations, Vercel Analytics.
+
+## Home (/#home)
+Hero with profile (/person.jpg), "Fullstack Developer" title, "Based in Lagos, Nigeria" badge, stats (10+ Projects, Fullstack, Available), "Get in touch" CTA (mailto:divineamunega@gmail.com).
+
+## Projects (/#projects)
+Showcase of 5 projects (detailed pages at /projects/[slug]):
+- [Jersey.Co (2024)](https://jerseyco.vercel.app/): E-commerce for sports jerseys (Astro, Tailwind). /projects/project_1.png [GitHub](https://github.com/divineamunega/jersey_co)
+- [Plant Palace (2024)](https://aptechota-plantpalace-cyberminds.vercel.app/): Plant marketplace (HTML/CSS/JS). /projects/project_2.png [GitHub](https://github.com/MhideTech/Techwiz-Project-PlantPalace)
+- [Duo Video Share (2024)](https://duo-share-v2.vercel.app/): P2P video sharing (React, WebRTC). /projects/project_3.png
+- [Get Linked (2023)](https://get-linked.netlify.app/): Hackathon site (Vanilla JS). /projects/project_4.png [GitHub](https://github.com/divineamunega/getlinked-tech-hackathon)
+- [News Portal (2024)](https://acu-news-portal.vercel.app/): Fullstack news app (React, Node, MongoDB). /projects/project_5.png
+
+## Skills (/#skills)
+Icons: React, Node.js, JavaScript, TypeScript, Astro, MongoDB, PostgreSQL, Supabase, Firebase, Python, Linux, CSS.
+
+## Contact (/#contact)
+- Email: divineamunega@gmail.com
+- GitHub: https://github.com/divineamunega
+- X/Twitter: https://x.com/divv_dev
+- LinkedIn: https://linkedin.com/in/divinne

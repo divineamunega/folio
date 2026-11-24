@@ -1,0 +1,114 @@
+---
+/**
+ * Contact Section
+ * Displays contact links in an elegant index layout
+ */
+
+import Section from "../layout/Section.astro";
+import Icon from "../ui/Icon.astro";
+
+const contactLinks = [
+  {
+    label: "Email",
+    username: "divineamunega@gmail.com",
+    href: "mailto:divineamunega@gmail.com",
+  },
+  {
+    label: "GitHub",
+    username: "divineamunega",
+    href: "https://github.com/divineamunega",
+    external: true,
+  },
+  {
+    label: "Twitter",
+    username: "@divv_dev",
+    href: "https://twitter.com/divv_dev",
+    external: true,
+  },
+  {
+    label: "LinkedIn",
+    username: "divinne",
+    href: "https://linkedin.com/in/divinne",
+    external: true,
+  },
+];
+---
+
+<Section id="contact" ariaLabel="Contact information">
+  <div class="split-layout">
+    <div class="sidebar space-y-6">
+      <h2 class="text-3xl md:text-5xl font-medium tracking-tight text-text-main text-balance">
+        Let's build something meaningful.
+      </h2>
+      <p class="text-base text-text-muted font-light leading-relaxed max-w-sm">
+        Open for freelance projects, full-time engineering roles, and technical consulting.
+      </p>
+    </div>
+    
+    <div class="links-list">
+      {
+        contactLinks.map((link) => (
+          <a
+            href={link.href}
+            {...(link.external && {
+              target: "_blank",
+              rel: "noopener noreferrer",
+            })}
+            class="contact-item link-row group text-text-main block"
+          >
+            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 py-6 border-b border-border-default transition-all duration-300 group-hover:border-text-main">
+              <span class="font-mono text-xs text-text-muted uppercase tracking-wider">
+                {link.label}
+              </span>
+              <div class="flex items-center gap-2 max-w-full min-w-0">
+                <span class="font-mono text-sm sm:text-base text-text-main group-hover:text-accent transition-colors break-all truncate">
+                  {link.username}
+                </span>
+                <Icon
+                  name="arrow-right"
+                  class="transition-transform group-hover:translate-x-1 text-text-muted group-hover:text-text-main w-3.5 h-3.5 flex-shrink-0"
+                />
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <style>
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    @media (min-width: 768px) {
+      .split-layout {
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 4rem;
+      }
+      .sidebar {
+        grid-column: span 5;
+      }
+      .links-list {
+        grid-column: span 7;
+        border-top: 1px solid var(--color-border-default);
+      }
+    }
+    
+    /* On mobile, add a top border to start the list clean */
+    @media (max-width: 767px) {
+      .links-list {
+        border-top: 1px solid var(--color-border-default);
+      }
+    }
+
+    .link-row {
+      text-decoration: none;
+    }
+    .link-row:hover {
+      padding-left: 0.5rem;
+      transition: padding 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  </style>
+</Section>

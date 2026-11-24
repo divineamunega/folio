@@ -1,0 +1,282 @@
+---
+/**
+ * 404 Error Page
+ * Clean, minimal 404 page with navigation back to home
+ */
+
+import BaseLayout from "../components/layout/BaseLayout.astro";
+import Button from "../components/ui/Button.astro";
+import Icon from "../components/ui/Icon.astro";
+import { siteConfig } from "../config/site";
+---
+
+<BaseLayout
+  title={`404 - Page Not Found | ${siteConfig.author.name}`}
+  description="The page you're looking for doesn't exist."
+  noIndex={true}
+>
+  <div
+    class="min-h-screen w-full flex items-center justify-center bg-bg-base text-text-main relative overflow-hidden"
+  >
+    <!-- Subtle grid background -->
+    <div
+      class="pointer-events-none absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
+    >
+      <div class="grid-pattern"></div>
+    </div>
+
+    <!-- Animated floating elements -->
+    <div class="floating-elements">
+      <div class="floating-circle floating-circle-1"></div>
+      <div class="floating-circle floating-circle-2"></div>
+      <div class="floating-circle floating-circle-3"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 max-w-2xl mx-auto px-6 text-center space-y-8">
+      <!-- 404 Number -->
+      <div class="error-code">
+        <h1
+          class="text-[120px] sm:text-[160px] md:text-[200px] font-black leading-none text-text-main tracking-tighter"
+          style="text-shadow: 0 0 40px rgba(99, 102, 241, 0.1);"
+        >
+          404
+        </h1>
+      </div>
+
+      <!-- Message -->
+      <div class="error-message space-y-4">
+        <h2
+          class="text-2xl md:text-3xl font-bold text-text-main"
+        >
+          Page Not Found
+        </h2>
+        <p
+          class="text-base md:text-lg text-text-muted font-light leading-relaxed max-w-md mx-auto"
+        >
+          The page you're looking for doesn't exist or has been moved. Let's
+          get you back on track.
+        </p>
+      </div>
+
+      <!-- Actions -->
+      <div class="error-actions flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <Button href="/" variant="primary" size="lg">
+          <Icon name="arrow-left" />
+          <span>Back to Home</span>
+        </Button>
+
+        <Button href="/#projects" variant="secondary" size="lg">
+          <span>View Projects</span>
+          <Icon name="arrow-right" />
+        </Button>
+      </div>
+
+      <!-- Helper links -->
+      <div class="helper-links pt-8">
+        <p class="text-sm text-[#666] dark:text-white/40 font-mono mb-4">
+          Quick Links
+        </p>
+        <div class="flex flex-wrap gap-4 justify-center text-sm">
+          <a
+            href="/#projects"
+            class="text-[#666] dark:text-white/60 hover:text-accent transition-colors"
+          >
+            Projects
+          </a>
+          <span class="text-[#666] dark:text-white/40">•</span>
+          <a
+            href="/#contact"
+            class="text-[#666] dark:text-white/60 hover:text-accent transition-colors"
+          >
+            Contact
+          </a>
+          <span class="text-[#666] dark:text-white/40">•</span>
+          <a
+            href={siteConfig.social.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[#666] dark:text-white/60 hover:text-accent transition-colors"
+          >
+            GitHub
+          </a>
+          <span class="text-[#666] dark:text-white/40">•</span>
+          <a
+            href={siteConfig.social.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[#666] dark:text-white/60 hover:text-accent transition-colors"
+          >
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Grid background */
+  .grid-pattern {
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  :global(.dark) .grid-pattern {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  }
+
+  /* Floating elements */
+  .floating-elements {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .floating-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.05));
+    backdrop-filter: blur(3px);
+  }
+
+  .floating-circle-1 {
+    width: 300px;
+    height: 300px;
+    top: -150px;
+    left: -150px;
+    animation: float 20s ease-in-out infinite;
+  }
+
+  .floating-circle-2 {
+    width: 200px;
+    height: 200px;
+    bottom: -100px;
+    right: -100px;
+    animation: float 15s ease-in-out infinite reverse;
+  }
+
+  .floating-circle-3 {
+    width: 150px;
+    height: 150px;
+    top: 50%;
+    right: 10%;
+    animation: float 25s ease-in-out infinite;
+    animation-delay: -5s;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-20px) rotate(90deg);
+    }
+    50% {
+      transform: translateY(0) rotate(180deg);
+    }
+    75% {
+      transform: translateY(20px) rotate(270deg);
+    }
+  }
+
+  /* Accent color */
+  .hover\:text-accent:hover {
+    color: var(--color-accent);
+  }
+
+  /* Set initial states for animation */
+  .error-code {
+    transform: translateY(-20px);
+  }
+
+  @media (max-width: 640px) {
+    .floating-circle-1 {
+      width: 200px;
+      height: 200px;
+    }
+    .floating-circle-2 {
+      width: 150px;
+      height: 150px;
+    }
+    .floating-circle-3 {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+
+  // Entrance animations
+  const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+
+  tl.to(".error-code", {
+    opacity: 1,
+    y: 0,
+    duration: 1,
+    delay: 0.2,
+  })
+    .to(
+      ".error-message",
+      {
+        opacity: 1,
+        duration: 0.8,
+      },
+      "-=0.5"
+    )
+    .to(
+      ".error-actions",
+      {
+        opacity: 1,
+        duration: 0.8,
+      },
+      "-=0.4"
+    )
+    .to(
+      ".helper-links",
+      {
+        opacity: 1,
+        duration: 0.6,
+      },
+      "-=0.3"
+    );
+
+  // Subtle parallax effect on mouse move
+  document.addEventListener("mousemove", (e) => {
+    const { clientX, clientY } = e;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    const moveX = (clientX - centerX) / 50;
+    const moveY = (clientY - centerY) / 50;
+
+    gsap.to(".floating-circle-1", {
+      x: moveX * 2,
+      y: moveY * 2,
+      duration: 1,
+      ease: "power2.out",
+    });
+
+    gsap.to(".floating-circle-2", {
+      x: -moveX * 1.5,
+      y: -moveY * 1.5,
+      duration: 1,
+      ease: "power2.out",
+    });
+
+    gsap.to(".floating-circle-3", {
+      x: moveX,
+      y: moveY,
+      duration: 1,
+      ease: "power2.out",
+    });
+  });
+</script>

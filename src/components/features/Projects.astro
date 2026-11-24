@@ -1,0 +1,113 @@
+---
+/**
+ * Projects Section
+ * Displays grid of project cards
+ */
+
+import Section from "../layout/Section.astro";
+import { orderedProjects } from "../../data/projects";
+---
+
+<Section id="projects" ariaLabel="Selected work projects">
+  <div class="split-layout">
+    <div class="sidebar space-y-4">
+      <h2
+        class="text-text-main text-3xl font-medium tracking-tight md:text-4xl"
+      >
+        Selected Work
+      </h2>
+      <p class="text-text-muted max-w-sm text-base leading-relaxed font-light">
+        Recent product work, business platforms, and technical experiments.
+      </p>
+      <a class="archive-link" href="/projects"
+        >Browse the full archive <span aria-hidden="true">↗</span></a
+      >
+    </div>
+    <div class="list">
+      {
+        orderedProjects.map((project) => (
+          <a href={`/projects/${project.slug}`} class="item-row group">
+            <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <div class="max-w-xl space-y-2">
+                <div class="flex items-center gap-3">
+                  <span class="text-text-muted font-mono text-xs">
+                    {project.year}
+                  </span>
+                  <h3 class="text-text-main group-hover:text-accent text-xl font-medium transition-colors">
+                    {project.title}
+                  </h3>
+                </div>
+                <p class="text-text-muted text-sm leading-relaxed">
+                  {project.description}
+                </p>
+              </div>
+              <div class="flex max-w-xs flex-wrap gap-2 md:justify-end">
+                {project.tags.slice(0, 3).map((tag) => (
+                  <span class="bg-border-default/20 text-text-muted px-2 py-1 font-mono text-xs">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <style>
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    @media (min-width: 768px) {
+      .split-layout {
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 4rem;
+      }
+      .sidebar {
+        grid-column: span 4;
+        position: sticky;
+        top: 7rem;
+        height: fit-content;
+      }
+      .list {
+        grid-column: span 8;
+      }
+    }
+    .list {
+      display: flex;
+      flex-direction: column;
+    }
+    .item-row {
+      display: block;
+      border-bottom: 1px solid var(--color-border-default);
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      padding: 2.5rem 0;
+    }
+    .item-row:first-child {
+      border-top: 1px solid var(--color-border-default);
+    }
+    .item-row:hover {
+      border-color: var(--color-text-main);
+      padding-left: 1rem;
+    }
+    .archive-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: fit-content;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-text-main);
+      text-decoration: underline;
+      text-decoration-color: var(--color-accent);
+      text-underline-offset: 0.35rem;
+      transition: color 0.2s ease;
+    }
+    .archive-link:hover {
+      color: var(--color-accent);
+    }
+  </style>
+</Section>

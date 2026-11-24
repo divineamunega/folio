@@ -1,0 +1,102 @@
+---
+/**
+ * Speaking Section
+ * Conference talks and technical sessions
+ */
+
+import Section from "../layout/Section.astro";
+import { talks } from "../../data/talks";
+---
+
+<Section id="speaking" ariaLabel="Conference talks and speaking">
+  <div class="split-layout">
+    <div class="sidebar space-y-4">
+      <h2
+        class="text-text-main text-3xl font-medium tracking-tight md:text-4xl"
+      >
+        Speaking
+      </h2>
+      <p class="text-text-muted max-w-sm text-base leading-relaxed font-light">
+        Talks on the systems I build — most recently the routing layer between an
+        application and the AI models it depends on.
+      </p>
+    </div>
+    <div class="list">
+      {
+        talks.map((talk) => {
+          const Tag = talk.url ? "a" : "div";
+          return (
+            <Tag
+              {...(talk.url
+                ? { href: talk.url, target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+              class="item-row group block"
+            >
+              <div class="space-y-3">
+                <div class="flex flex-wrap items-center gap-3">
+                  {talk.event && (
+                    <span class="text-text-muted font-mono text-xs">
+                      {[talk.event, talk.year].filter(Boolean).join(" · ")}
+                    </span>
+                  )}
+                </div>
+                <h3 class="text-text-main group-hover:text-accent max-w-2xl text-xl font-medium text-pretty transition-colors">
+                  {talk.title}
+                </h3>
+                <p class="text-text-muted max-w-2xl text-sm leading-relaxed">
+                  {talk.description}
+                </p>
+                {talk.url && (
+                  <span class="text-accent group-hover:text-accent-light inline-flex items-center gap-1.5 font-mono text-xs transition-colors">
+                    <span>View session</span>
+                    <span aria-hidden="true">↗</span>
+                  </span>
+                )}
+              </div>
+            </Tag>
+          );
+        })
+      }
+    </div>
+  </div>
+
+  <style>
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    @media (min-width: 768px) {
+      .split-layout {
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 4rem;
+      }
+      .sidebar {
+        grid-column: span 4;
+        position: sticky;
+        top: 7rem;
+        height: fit-content;
+      }
+      .list {
+        grid-column: span 8;
+      }
+    }
+    .list {
+      display: flex;
+      flex-direction: column;
+    }
+    .item-row {
+      display: block;
+      border-bottom: 1px solid var(--color-border-default);
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      padding: 2.5rem 0;
+    }
+    .item-row:first-child {
+      border-top: 1px solid var(--color-border-default);
+    }
+    a.item-row:hover {
+      border-color: var(--color-text-main);
+      padding-left: 1rem;
+    }
+  </style>
+</Section>

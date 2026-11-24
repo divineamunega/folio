@@ -1,0 +1,189 @@
+---
+/**
+ * BlogSEO Component
+ * Comprehensive SEO for blog posts with canonical URL support
+ * Ensures search engines recognize YOUR site as the original source
+ */
+
+import { siteConfig } from "../../config/site";
+
+interface Props {
+	post: {
+		title: string;
+		brief?: string;
+		content: {
+			markdown: string;
+			html: string;
+		};
+		publishedAt?: string;
+		updatedAt?: string;
+		readTimeInMinutes?: number;
+		coverImage?: {
+			url: string;
+		};
+		tags?: Array<{
+			name: string;
+			slug: string;
+		}>;
+		author?: {
+			name: string;
+			profilePicture?: string;
+			bio?: {
+				text: string;
+			};
+		};
+		seo?: {
+			title?: string;
+			description?: string;
+		};
+	};
+	slug: string;
+}
+
+const { post, slug } = Astro.props;
+
+// CRITICAL: Canonical URL points to YOUR site (not Hashnode)
+const canonicalURL = `${siteConfig.url}/blog/${slug}`;
+
+// SEO Title with branding
+const seoTitle = post.seo?.title || `${post.title} | ${siteConfig.author.name}`;
+
+// Meta Description - prefer brief over truncated content
+const metaDescription =
+	post.seo?.description ||
+	post.brief ||
+	post.content.markdown.slice(0, 155).trim() + "...";
+
+// Open Graph Image
+const ogImage = post.coverImage?.url || siteConfig.ogImage;
+
+// Keywords from tags
+const keywords = post.tags?.map((tag) => tag.name).join(", ") || "";
+
+// Dates
+const publishedDate = post.publishedAt
+	? new Date(post.publishedAt).toISOString()
+	: new Date().toISOString();
+const modifiedDate = post.updatedAt
+	? new Date(post.updatedAt).toISOString()
+	: publishedDate;
+
+// Author info
+const authorName = post.author?.name || siteConfig.author.name;
+const authorImage =
+	post.author?.profilePicture || `${siteConfig.url}${siteConfig.author.image}`;
+
+// Word count for schema
+const wordCount = post.content.markdown.split(/\s+/).length;
+---
+
+<!-- Primary SEO -->
+<title>{seoTitle}</title>
+<meta name="description" content={metaDescription} />
+{keywords && <meta name="keywords" content={keywords} />}
+<meta name="author" content={authorName} />
+<meta
+	name="robots"
+	content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+/>
+
+<!-- CANONICAL URL - Points to YOUR site as the original source -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Article Meta Tags -->
+<meta property="article:published_time" content={publishedDate} />
+<meta property="article:modified_time" content={modifiedDate} />
+<meta property="article:author" content={authorName} />
+{post.tags?.map((tag) => <meta property="article:tag" content={tag.name} />)}
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="article" />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:site_name" content={`${siteConfig.author.name} - Blog`} />
+<meta property="og:title" content={seoTitle} />
+<meta property="og:description" content={metaDescription} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={post.title} />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={siteConfig.social.twitterHandle} />
+<meta name="twitter:creator" content={siteConfig.social.twitterHandle} />
+<meta name="twitter:title" content={seoTitle} />
+<meta name="twitter:description" content={metaDescription} />
+<meta name="twitter:image" content={ogImage} />
+{
+	post.readTimeInMinutes && (
+		<>
+			<meta name="twitter:label1" content="Reading time" />
+			<meta
+				name="twitter:data1"
+				content={`${post.readTimeInMinutes} min read`}
+			/>
+		</>
+	)
+}
+
+<!-- BlogPosting Schema (JSON-LD) -->
+<script
+	type="application/ld+json"
+	set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "BlogPosting",
+		headline: post.title,
+		description: metaDescription,
+		image: ogImage,
+		datePublished: publishedDate,
+		dateModified: modifiedDate,
+		author: {
+			"@type": "Person",
+			name: authorName,
+			image: authorImage,
+		},
+		publisher: {
+			"@type": "Person",
+			name: siteConfig.author.name,
+			image: `${siteConfig.url}${siteConfig.author.image}`,
+		},
+		mainEntityOfPage: {
+			"@type": "WebPage",
+			"@id": canonicalURL,
+		},
+		url: canonicalURL,
+		wordCount: wordCount,
+		...(keywords && { keywords: keywords }),
+		inLanguage: "en-US",
+	})}
+/>
+
+<!-- BreadcrumbList Schema (JSON-LD) -->
+<script
+	type="application/ld+json"
+	set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		itemListElement: [
+			{
+				"@type": "ListItem",
+				position: 1,
+				name: "Home",
+				item: siteConfig.url,
+			},
+			{
+				"@type": "ListItem",
+				position: 2,
+				name: "Blog",
+				item: `${siteConfig.url}/blog`,
+			},
+			{
+				"@type": "ListItem",
+				position: 3,
+				name: post.title,
+				item: canonicalURL,
+			},
+		],
+	})}
+/>

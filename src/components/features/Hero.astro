@@ -1,0 +1,302 @@
+---
+/**
+ * Hero Section
+ * Main landing section with intro and CTA
+ */
+
+import { siteConfig } from "../../config/site";
+import Button from "../ui/Button.astro";
+import { ArrowDown } from "lucide-react";
+
+const mailtoLink = `mailto:${siteConfig.author.email}?subject=Project%20Inquiry&body=Hi%20Divinne%2C%0D%0A%0D%0AI'd%20like%20to%20discuss%20a%20project.%0D%0A%0D%0A`;
+---
+
+<section
+  class="bg-bg-base text-text-main relative flex min-h-screen w-full items-center justify-start overflow-hidden"
+  aria-label="Hero section"
+>
+  <div
+    class="relative z-10 mx-auto grid w-full max-w-6xl min-w-0 gap-10 px-5 py-24 sm:px-6 lg:grid-cols-12 lg:items-center lg:gap-12 lg:py-28"
+  >
+    <!-- Primary introduction -->
+    <div class="min-w-0 space-y-8 text-left lg:col-span-7 lg:py-12">
+      <!-- Title -->
+      <div class="space-y-8">
+        <h1
+          class="hero-title text-text-main relative max-w-4xl text-[clamp(2.65rem,12vw,5.75rem)] leading-[0.96] font-black tracking-[-0.035em] text-balance [overflow-wrap:anywhere] select-none"
+        >
+          Software &amp; Systems Engineer
+        </h1>
+        <div
+          class="hero-subtitle border-border-default max-w-[65ch] space-y-5 border-t pt-6 font-light"
+        >
+          <p class="text-text-muted font-mono text-xs tracking-wide">
+            Currently building <span class="text-text-main font-medium"
+              >PhishCore</span
+            > — a human risk management platform.
+          </p>
+          <p
+            class="text-text-main text-[clamp(1rem,1.8vw,1.125rem)] leading-[1.75] font-medium text-pretty"
+          >
+            We shape our tools, and thereafter our tools shape us.
+          </p>
+          <p
+            class="text-text-muted hidden text-[clamp(1rem,1.8vw,1.125rem)] leading-[1.75] text-pretty sm:block"
+          >
+            I build backend and AI-integrated systems in TypeScript and Node.js —
+            API services, data pipelines, and the routing layer that sits between
+            an application and the models it depends on, backed by PostgreSQL and
+            Redis.
+          </p>
+          <p
+            class="text-text-muted text-base leading-[1.75] text-pretty sm:hidden"
+          >
+            I build backend and AI-integrated systems in TypeScript and Node.js —
+            services, model routing, and data pipelines, backed by PostgreSQL and
+            Redis.
+          </p>
+          <p
+            class="text-text-muted hidden text-[clamp(1rem,1.8vw,1.125rem)] leading-[1.75] text-pretty sm:block"
+          >
+            I care about systems that stay correct and fast under load: clear
+            service boundaries, resilient infrastructure, and interfaces that
+            stay out of the user's way.
+          </p>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="hero-cta pt-4">
+        <div class="group relative inline-block">
+          <Button
+            href={mailtoLink}
+            variant="primary"
+            size="lg"
+            class="relative z-10 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-[3px] group-hover:translate-y-[3px]"
+            ariaLabel="Send email to discuss project opportunities"
+          >
+            Get in touch
+          </Button>
+          <div
+            class="border-accent pointer-events-none absolute inset-0 z-0 translate-x-[6px] translate-y-[6px] border-2 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-[2px] group-hover:translate-y-[2px]"
+          >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Portrait -->
+    <figure
+      class="hero-portrait border-border-default bg-surface-card relative min-w-0 overflow-hidden border lg:col-span-5 lg:h-[min(74vh,48rem)] lg:min-h-[38rem]"
+    >
+      <img
+        src="/image.png"
+        alt="Divinne Amunega taking a mirror portrait in sunglasses and a denim jacket"
+        width="892"
+        height="1422"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+        class="h-auto w-full object-contain transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:h-full lg:object-cover lg:object-[center_28%]"
+      />
+      <figcaption
+        class="bg-text-main text-bg-base relative flex flex-wrap items-center justify-between gap-2 px-4 py-3 font-mono text-xs lg:absolute lg:right-0 lg:bottom-0 lg:left-0"
+      >
+        <span>Divinne Amunega</span>
+        <span>Lagos, Nigeria</span>
+      </figcaption>
+    </figure>
+
+    <!-- Scroll indicator -->
+    <div
+      class="absolute bottom-6 left-6 hidden animate-bounce opacity-30 md:block"
+    >
+      <ArrowDown className="text-text-main h-5 w-5" />
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (hover: hover) and (pointer: fine) {
+    .hero-portrait:hover img {
+      transform: scale(1.015);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-portrait img {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+  import ScrollTrigger from "gsap/ScrollTrigger";
+  import Lenis from "lenis";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Check prefers-reduced-motion
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  if (prefersReducedMotion) {
+    // Just reveal everything instantly
+    gsap.set(
+      [
+        ".hero-title",
+        ".hero-subtitle",
+        ".hero-cta",
+        ".section-heading",
+        ".item-row",
+        ".blog-card",
+        ".contact-item",
+      ],
+      { opacity: 1, y: 0, x: 0 },
+    );
+  } else {
+    // Smooth scroll
+    const lenis = new Lenis({
+      smoothWheel: true,
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.lagSmoothing(0);
+
+    // 1. Sequential entrance animations for the Hero
+    const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+
+    tl.fromTo(
+      ".hero-title",
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 1.0, delay: 0.2 },
+    )
+      .fromTo(
+        ".hero-subtitle",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1.0 },
+        "-=0.6",
+      )
+      .fromTo(
+        ".hero-cta",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8 },
+        "-=0.6",
+      );
+
+    // 2. Section Heading reveals on scroll
+    gsap.utils.toArray(".section-heading").forEach((heading: any) => {
+      gsap.fromTo(
+        heading,
+        { opacity: 0, y: 30 },
+        {
+          scrollTrigger: {
+            trigger: heading,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          immediateRender: false,
+        },
+      );
+    });
+
+    // 3. Projects List Stagger Reveal
+    const listContainer = document.querySelector(".list");
+    if (listContainer) {
+      gsap.fromTo(
+        ".item-row",
+        { opacity: 0, y: 30 },
+        {
+          scrollTrigger: {
+            trigger: listContainer,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power3.out",
+        },
+      );
+    }
+
+    // 4. Blog Cards Stagger Reveal
+    const blogGrid = document.querySelector("#blog .grid");
+    if (blogGrid) {
+      gsap.fromTo(
+        ".blog-card",
+        { opacity: 0, y: 30 },
+        {
+          scrollTrigger: {
+            trigger: blogGrid,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power3.out",
+          immediateRender: false,
+        },
+      );
+    }
+
+    // 5. Testimonials List Stagger Reveal
+    const reviewsContainer = document.querySelector(".reviews-list");
+    if (reviewsContainer) {
+      gsap.fromTo(
+        ".testimonial-item",
+        { opacity: 0, y: 30 },
+        {
+          scrollTrigger: {
+            trigger: reviewsContainer,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power3.out",
+        },
+      );
+    }
+
+    // 6. Contact Items Stagger Reveal
+    const contactContainer = document.querySelector("#contact .links-list");
+    if (contactContainer) {
+      gsap.fromTo(
+        ".contact-item",
+        { opacity: 0, x: -20 },
+        {
+          scrollTrigger: {
+            trigger: contactContainer,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "power3.out",
+        },
+      );
+    }
+  }
+</script>

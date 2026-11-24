@@ -1,0 +1,180 @@
+---
+/**
+ * SEO Component
+ * Handles all meta tags, Open Graph, Twitter Cards, and structured data
+ */
+
+import { siteConfig, seoKeywords } from "../../config/site";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonicalURL: string;
+  noIndex?: boolean;
+  article?: boolean;
+  keywords?: string;
+}
+
+const {
+  title,
+  description,
+  image = siteConfig.ogImage,
+  canonicalURL,
+  noIndex = false,
+  article = false,
+  keywords,
+} = Astro.props;
+
+const metaKeywords = keywords || seoKeywords.join(", ");
+
+const robotsContent = noIndex
+  ? "noindex, nofollow"
+  : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+---
+
+<!-- Primary SEO -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content={metaKeywords} />
+<meta name="author" content={siteConfig.author.name} />
+<meta name="robots" content={robotsContent} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={article ? "article" : "website"} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:site_name" content={`${siteConfig.author.name} - Portfolio`} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={title} />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={siteConfig.social.twitterHandle} />
+<meta name="twitter:creator" content={siteConfig.social.twitterHandle} />
+<meta name="twitter:url" content={canonicalURL} />
+<meta property="twitter:domain" content={new URL(siteConfig.url).hostname} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+<meta name="twitter:image:alt" content={title} />
+
+<!-- Canonical -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Additional SEO -->
+<link rel="apple-touch-icon" href="/person.png" />
+<meta name="format-detection" content="telephone=no" />
+
+<!-- Geographic Location -->
+<meta name="geo.region" content="NG-LA" />
+<meta name="geo.placename" content="Lagos, Nigeria" />
+<meta name="geo.position" content="6.5244;3.3792" />
+<meta name="ICBM" content="6.5244, 3.3792" />
+
+<!-- Additional Location Keywords -->
+<meta name="coverage" content="Nigeria" />
+<meta name="distribution" content="global" />
+<meta name="target" content="all" />
+
+<!-- Schema.org JSON-LD (Person) -->
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: siteConfig.author.name,
+    alternateName: siteConfig.author.alternateName,
+    jobTitle: siteConfig.author.jobTitle,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    image: `${siteConfig.url}${siteConfig.author.image}`,
+    email: siteConfig.author.email,
+    workLocation: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: siteConfig.author.addressRegion,
+        addressCountry: siteConfig.author.addressCountry,
+      },
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: siteConfig.author.addressRegion,
+      addressRegion: siteConfig.author.addressRegion,
+      addressCountry: siteConfig.author.addressCountry,
+    },
+    sameAs: [
+      siteConfig.social.github,
+      siteConfig.social.linkedin,
+      siteConfig.social.twitter,
+    ],
+    knowsAbout: [
+      "Fullstack Development",
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Node.js",
+      "Astro",
+      "MongoDB",
+      "PostgreSQL",
+      "Supabase",
+      "Firebase",
+      "Python",
+      "Linux",
+      "Web Development",
+      "Software Engineering",
+    ],
+    knowsLanguage: ["en"],
+    hasOccupation: {
+      "@type": "Occupation",
+      name: siteConfig.author.jobTitle,
+      occupationalCategory: "15-1254.00",
+      skills:
+        "React, Node.js, TypeScript, JavaScript, Astro, MongoDB, PostgreSQL, Python",
+    },
+  })}
+/>
+
+<!-- WebSite Schema -->
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: `${siteConfig.author.name} Portfolio`,
+    description: "Portfolio website showcasing fullstack development projects and skills",
+    url: siteConfig.url,
+    author: {
+      "@type": "Person",
+      name: siteConfig.author.name,
+    },
+    inLanguage: "en-US",
+  })}
+/>
+
+<!-- ProfilePage Schema -->
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    dateCreated: "2024-01-01",
+    dateModified: new Date().toISOString().split("T")[0],
+    mainEntity: {
+      "@type": "Person",
+      name: siteConfig.author.name,
+      description: siteConfig.author.jobTitle,
+      image: `${siteConfig.url}/person.png`,
+      sameAs: [
+        siteConfig.social.github,
+        siteConfig.social.linkedin,
+        siteConfig.social.twitter,
+      ],
+    },
+  })}
+/>

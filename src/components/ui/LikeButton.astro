@@ -1,0 +1,249 @@
+---
+interface Props {
+	slug: string;
+}
+
+const { slug } = Astro.props;
+---
+
+<div class="like-button-container" data-slug={slug}>
+	<button
+		class="like-button group flex items-center gap-3 transition-all rounded-md focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+		aria-label="Like this post"
+		aria-pressed="false"
+	>
+		<svg
+			class="heart-icon h-10 w-10 transition-all scale-100 group-hover:scale-110 active:scale-95 duration-200"
+			fill="var(--color-accent)"
+			stroke="none"
+			viewBox="0 0 24 24"
+			style="opacity: 0.3"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+			></path>
+		</svg>
+		<span class="like-text font-mono text-base text-[#0a0a0a] dark:text-white" aria-live="polite">
+			<span class="count-text">0</span>
+			<span class="plural-text">people</span> liked this
+		</span>
+	</button>
+</div>
+
+<script>
+	import FingerprintJS from "@fingerprintjs/fingerprintjs";
+	import confetti from "canvas-confetti";
+
+	interface LikeResponse {
+		slug: string;
+		likes: number;
+		hasLiked?: boolean;
+	}
+
+	interface LocalLikeData {
+		count: number;
+		hasLiked: boolean;
+	}
+
+	class LikeButton {
+		private container: HTMLElement;
+		private button: HTMLButtonElement;
+		private countElement: HTMLElement;
+		private pluralElement: HTMLElement;
+		private heartIcon: SVGElement;
+		private slug: string;
+		private fingerprint: string | null = null;
+		private hasLiked: boolean = false;
+		private likeCount: number = 0;
+		private isLoading: boolean = false;
+		private redisAvailable: boolean = true;
+
+		constructor(container: HTMLElement) {
+			this.container = container;
+			this.slug = container.dataset.slug || "";
+			this.button = container.querySelector(
+				".like-button",
+			) as HTMLButtonElement;
+			this.countElement = container.querySelector(".count-text") as HTMLElement;
+			this.pluralElement = container.querySelector(
+				".plural-text",
+			) as HTMLElement;
+			this.heartIcon = container.querySelector(".heart-icon") as SVGElement;
+
+			this.init();
+		}
+
+		private async init() {
+			// Start with 0 (optimistic)
+			this.updateUI();
+
+			await this.initFingerprint();
+			await this.fetchLikeStatus();
+			this.button.addEventListener("click", () => this.toggleLike());
+		}
+
+		private async initFingerprint() {
+			try {
+				const fp = await FingerprintJS.load();
+				const result = await fp.get();
+				this.fingerprint = result.visitorId;
+			} catch (error) {
+				console.warn(
+					"Fingerprint initialization failed, using fallback:",
+					error,
+				);
+				this.fingerprint =
+					"fallback-" + Math.random().toString(36).substring(2, 11);
+			}
+		}
+
+		private async fetchLikeStatus() {
+			try {
+				const response = await fetch(`/api/likes/${this.slug}`);
+
+				if (!response.ok) {
+					throw new Error("Redis not available");
+				}
+
+				const data: LikeResponse = await response.json();
+				this.likeCount = data.likes;
+				this.redisAvailable = true;
+
+				const localData = this.getLocalData();
+				this.hasLiked = localData.hasLiked;
+
+				this.updateUI();
+			} catch (error) {
+				console.warn("Redis unavailable, using localStorage only:", error);
+				this.redisAvailable = false;
+
+				const localData = this.getLocalData();
+				this.likeCount = localData.count;
+				this.hasLiked = localData.hasLiked;
+
+				this.updateUI();
+			}
+		}
+
+		private async toggleLike() {
+			if (this.isLoading || !this.fingerprint) return;
+
+			// Optimistic update - happens immediately
+			const wasLiked = this.hasLiked;
+			this.hasLiked = !this.hasLiked;
+			this.likeCount += this.hasLiked ? 1 : -1;
+
+			if (this.likeCount < 0) this.likeCount = 0;
+
+			// Trigger confetti when liking (not unliking)
+			if (this.hasLiked && !wasLiked) {
+				const rect = this.heartIcon.getBoundingClientRect();
+				const x = (rect.left + rect.width / 2) / window.innerWidth;
+				const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+				confetti({
+					origin: { x, y },
+					particleCount: 40,
+					spread: 60,
+					colors: ["#6366f1", "#818cf8", "#f43f5e", "#fda4af"],
+				});
+			}
+
+			// Update UI immediately (synchronous)
+			this.updateUI();
+
+			// Save to localStorage immediately
+			this.saveLocalData();
+
+			// Try to sync with server if available (async)
+			if (this.redisAvailable) {
+				this.isLoading = true;
+
+				try {
+					const response = await fetch(`/api/likes/${this.slug}`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							fingerprint: this.fingerprint,
+						}),
+					});
+
+					if (!response.ok) {
+						throw new Error("Server request failed");
+					}
+
+					const data: LikeResponse = await response.json();
+
+					// Update with server response
+					this.hasLiked = data.hasLiked || false;
+					this.likeCount = data.likes;
+					this.updateUI();
+					this.saveLocalData();
+				} catch (error) {
+					console.warn(
+						"Failed to sync with server, using localStorage only:",
+						error,
+					);
+					this.redisAvailable = false;
+				} finally {
+					this.isLoading = false;
+				}
+			}
+		}
+
+		private getLocalData(): LocalLikeData {
+			const allLikes = JSON.parse(localStorage.getItem("postLikes") || "{}");
+			return allLikes[this.slug] || { count: 0, hasLiked: false };
+		}
+
+		private saveLocalData() {
+			const allLikes = JSON.parse(localStorage.getItem("postLikes") || "{}");
+			allLikes[this.slug] = {
+				count: this.likeCount,
+				hasLiked: this.hasLiked,
+			};
+			localStorage.setItem("postLikes", JSON.stringify(allLikes));
+		}
+
+		private updateUI() {
+			this.countElement.textContent = this.likeCount.toString();
+			this.pluralElement.textContent =
+				this.likeCount === 1 ? "person" : "people";
+			
+			// Update heart icon opacity
+			this.heartIcon.style.opacity = this.hasLiked ? "1" : "0.3";
+			
+			// Update screen reader attributes
+			this.button.setAttribute("aria-pressed", this.hasLiked ? "true" : "false");
+			this.button.setAttribute(
+				"aria-label",
+				this.hasLiked ? "Unlike this post" : "Like this post"
+			);
+		}
+	}
+
+	document.addEventListener("DOMContentLoaded", () => {
+		const containers = document.querySelectorAll(".like-button-container");
+		containers.forEach((container) => {
+			new LikeButton(container as HTMLElement);
+		});
+	});
+</script>
+
+<style>
+	.like-button {
+		background: none;
+		border: none;
+		padding: 4px;
+		cursor: pointer;
+	}
+
+	.like-button:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+</style>

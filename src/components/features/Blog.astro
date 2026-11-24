@@ -1,0 +1,157 @@
+---
+/**
+ * Blog Section
+ * Displays grid of recent blog articles
+ */
+
+import Section from "../layout/Section.astro";
+import Icon from "../ui/Icon.astro";
+import { fetchAllPublicationPosts } from "../../lib/api";
+import { toBlogCardProps } from "../../lib/blog-card";
+
+const blogPosts = (await fetchAllPublicationPosts())
+  .slice(0, 4)
+  .map(toBlogCardProps);
+const [featuredPost, ...supportingPosts] = blogPosts;
+
+function formatDate(date: string) {
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+---
+
+{
+  featuredPost && (
+    <Section id="blog" ariaLabel="Recent blog articles">
+      <div class="section-heading mb-14 grid gap-8 md:mb-20 md:grid-cols-12 md:items-end">
+        <h2
+          id="blog-heading"
+          class="text-text-main max-w-4xl text-[clamp(2.75rem,7vw,5.75rem)] leading-[0.96] font-black tracking-[-0.035em] text-balance md:col-span-8"
+        >
+          Notes from the work.
+        </h2>
+
+        <div class="space-y-6 md:col-span-4 md:pb-2">
+          <p class="text-text-muted max-w-[42ch] text-base leading-relaxed text-pretty">
+            Technical deep dives, progress logs, and honest retrospectives from
+            the systems I’m building.
+          </p>
+          <a
+            href="/blog"
+            class="group text-text-main hover:text-accent inline-flex items-center gap-2 text-sm font-semibold transition-colors"
+          >
+            <span>Browse every article</span>
+            <Icon
+              name="arrow-right"
+              class="transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </a>
+        </div>
+      </div>
+
+      <div class="blog-composition grid items-stretch gap-0 md:grid-cols-12">
+        <a
+          href={featuredPost.slug}
+          class="blog-card featured-article group bg-text-main text-bg-base flex min-h-[22rem] flex-col justify-between p-7 sm:min-h-[30rem] md:col-span-7 md:min-h-[36rem] md:p-10 lg:p-12"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
+            <span class="text-bg-base/70 font-mono text-xs">Latest entry</span>
+            <div class="flex flex-wrap justify-end gap-2">
+              {featuredPost.tags.slice(0, 3).map((tag) => (
+                <span class="bg-bg-base/10 text-bg-base px-2 py-1 font-mono text-xs">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div class="max-w-2xl space-y-7">
+            <h3 class="text-[clamp(2.25rem,5vw,4.5rem)] leading-[0.98] font-black tracking-[-0.035em] text-balance">
+              {featuredPost.title}
+            </h3>
+            <p class="text-bg-base/75 hidden max-w-[58ch] text-base leading-relaxed text-pretty sm:block md:text-lg">
+              {featuredPost.excerpt}
+            </p>
+
+            <div class="border-bg-base/20 flex flex-wrap items-center justify-between gap-5 border-t pt-5">
+              <div class="text-bg-base/70 flex items-center gap-3 font-mono text-xs">
+                <time datetime={featuredPost.date}>
+                  {formatDate(featuredPost.date)}
+                </time>
+                <span aria-hidden="true">·</span>
+                <span>{featuredPost.readTime} min read</span>
+              </div>
+
+              <span class="inline-flex items-center gap-2 text-sm font-semibold">
+                Read the latest
+                <Icon
+                  name="arrow-right"
+                  class="transition-transform duration-300 group-hover:translate-x-1.5"
+                />
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <div class="archive-list border-border-default flex flex-col border-x border-b md:col-span-5 md:border-t md:border-l-0">
+          {supportingPosts.map((post) => (
+            <a
+              href={post.slug}
+              class="blog-card archive-row group border-border-default flex flex-1 flex-col justify-between gap-8 border-t p-7 first:border-t-0 md:p-8"
+            >
+              <div class="text-text-muted flex items-center justify-between gap-4 font-mono text-xs">
+                <time datetime={post.date}>{formatDate(post.date)}</time>
+                <span>{post.readTime} min read</span>
+              </div>
+
+              <div class="flex items-end justify-between gap-6">
+                <h3 class="text-text-main group-hover:text-accent max-w-md text-[clamp(1.35rem,2.3vw,2rem)] leading-tight font-bold tracking-[-0.02em] text-balance transition-colors">
+                  {post.title}
+                </h3>
+                <Icon
+                  name="arrow-right"
+                  class="text-text-muted group-hover:text-accent mb-1 shrink-0 transition-all duration-300 group-hover:translate-x-1"
+                />
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </Section>
+  )
+}
+
+<style>
+  .featured-article,
+  .archive-row {
+    transition:
+      border-color 300ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .featured-article:hover {
+    outline: 3px solid var(--color-accent);
+    outline-offset: -3px;
+  }
+
+  .archive-row:hover {
+    border-color: var(--color-text-primary);
+    background-color: color-mix(
+      in oklch,
+      var(--color-card-bg) 82%,
+      var(--color-border) 18%
+    );
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .featured-article,
+    .archive-row,
+    .featured-article :global(svg),
+    .archive-row :global(svg) {
+      transition: none;
+    }
+  }
+</style>

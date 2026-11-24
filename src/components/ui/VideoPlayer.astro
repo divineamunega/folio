@@ -1,0 +1,87 @@
+---
+/**
+ * Custom Video Player
+ * Shows project image initially, switches to Cloudinary iframe on click/keyboard trigger
+ */
+
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+
+interface Props {
+  videoUrl: string;
+  imageUrl: string;
+  title: string;
+}
+
+const { videoUrl, imageUrl, title } = Astro.props;
+---
+
+<div 
+  class="video-player-container aspect-video relative group cursor-pointer border border-black/10 dark:border-white/10 overflow-hidden"
+  role="button"
+  tabindex="0"
+  aria-label={`Play ${title} project demo video`}
+>
+  <!-- Image overlay -->
+  <div class="video-thumbnail absolute inset-0 z-10 transition-opacity duration-300">
+    <Image
+      src={imageUrl}
+      alt={`${title} project demo`}
+      class="w-full h-full object-cover"
+      width={1200}
+      height={675}
+      loading="lazy"
+      format="webp"
+    />
+    
+    <!-- Play button overlay -->
+    <div class="absolute inset-0 bg-black/20 flex items-center justify-center group-hover:bg-black/30 transition-colors">
+      <div class="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center group-hover:bg-white transition-colors">
+        <Icon name="play" class="text-black ml-1 w-6 h-6" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Cloudinary iframe -->
+  <iframe
+    class="video-element w-full h-full opacity-0 transition-opacity duration-300"
+    data-video-url={videoUrl}
+    allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+    allowfullscreen
+    frameborder="0"
+  ></iframe>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const containers = document.querySelectorAll('.video-player-container');
+    
+    containers.forEach(container => {
+      const thumbnail = container.querySelector('.video-thumbnail') as HTMLElement;
+      const iframe = container.querySelector('.video-element') as HTMLIFrameElement;
+      
+      const playVideo = () => {
+        if (thumbnail && iframe) {
+          const videoUrl = iframe.getAttribute('data-video-url');
+          iframe.src = `${videoUrl}&autoplay=true`;
+          thumbnail.style.display = 'none';
+          iframe.style.opacity = '1';
+          (container as HTMLElement).style.cursor = 'default';
+          container.removeAttribute('role');
+          container.removeAttribute('tabindex');
+          container.removeAttribute('aria-label');
+        }
+      };
+
+      container.addEventListener('click', playVideo);
+
+      container.addEventListener('keydown', (e: Event) => {
+        const keyEvent = e as KeyboardEvent;
+        if (keyEvent.key === 'Enter' || keyEvent.key === ' ') {
+          keyEvent.preventDefault();
+          playVideo();
+        }
+      });
+    });
+  });
+</script>

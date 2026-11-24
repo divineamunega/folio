@@ -1,0 +1,35 @@
+---
+/**
+ * Badge Component
+ * Small label/tag component for tags, categories, etc.
+ */
+
+interface Props {
+	variant?: "default" | "accent";
+	size?: "sm" | "md";
+	class?: string;
+	children?: any;
+}
+
+const {
+	variant = "default",
+	size = "md",
+	class: className = "",
+} = Astro.props as Props;
+
+const variantStyles: Record<NonNullable<Props["variant"]>, string> = {
+	default: "bg-border-default/50 text-text-muted",
+	accent: "bg-accent/10 text-accent",
+};
+
+const sizeStyles: Record<NonNullable<Props["size"]>, string> = {
+	sm: "text-xs px-2 py-1",
+	md: "text-sm px-3 py-1.5",
+};
+
+const classes = `font-mono ${variantStyles[variant]} ${sizeStyles[size]} ${className}`;
+---
+
+<span class={classes}>
+	<slot />
+</span>

@@ -1,0 +1,168 @@
+---
+import "../../styles/global.css";
+import { fetchPublicationPost } from "../../lib/api";
+export const prerender = false;
+
+import BlogSEO from "../../components/layout/BlogSEO.astro";
+import Navbar from "../../components/layout/Navbar.astro";
+import Footer from "../../components/layout/Footer.astro";
+import Section from "../../components/layout/Section.astro";
+import LikeButton from "../../components/ui/LikeButton.astro";
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect("/404");
+}
+
+const post = await fetchPublicationPost(slug);
+
+if (!post) {
+  return Astro.redirect("/404");
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="theme-color"
+      content="#000000"
+      media="(prefers-color-scheme: dark)"
+    />
+    <meta
+      name="theme-color"
+      content="#fafafa"
+      media="(prefers-color-scheme: light)"
+    />
+
+    <BlogSEO post={post} slug={slug} />
+
+    <!-- Fonts & Icons -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+    />
+
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body class="bg-bg-base text-text-main overflow-x-hidden">
+    <!-- Theme detection script (runs before page renders to prevent FOUC) -->
+    <script is:inline>
+      if (
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        document.body.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        document.body.classList.remove("dark");
+      }
+    </script>
+
+    <Navbar />
+
+    <Section id="article" noBorder={true} spacing="lg">
+      <div class="mx-auto max-w-3xl">
+        <!-- Back link -->
+        <a
+          href="/blog"
+          class="text-text-muted mb-8 inline-flex items-center gap-2 text-sm font-medium transition-colors hover:text-[var(--color-accent)]"
+        >
+          <svg
+            class="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Back to blog
+        </a>
+
+        <!-- Article header -->
+        <header class="mb-12">
+          <h1 class="text-text-main mb-6 text-4xl font-black md:text-5xl">
+            {post.title}
+          </h1>
+
+          <!-- Article metadata -->
+          <div
+            class="text-text-muted flex flex-wrap items-center gap-4 text-sm"
+          >
+            {
+              post.author?.name && (
+                <div class="flex items-center gap-2">
+                  {post.author.profilePicture && (
+                    <img
+                      src={post.author.profilePicture}
+                      alt={post.author.name}
+                      class="h-8 w-8 rounded-full"
+                    />
+                  )}
+                  <span>{post.author.name}</span>
+                </div>
+              )
+            }
+
+            {
+              post.publishedAt && (
+                <time datetime={post.publishedAt}>
+                  {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+              )
+            }
+
+            {
+              post.readTimeInMinutes && (
+                <span>{post.readTimeInMinutes} min read</span>
+              )
+            }
+          </div>
+        </header>
+
+        <!-- Banner Image -->
+        {
+          post.coverImage?.url && (
+            <div class="mb-12">
+              <img
+                src={post.coverImage.url}
+                alt={post.title}
+                class="h-auto w-full rounded-lg"
+              />
+            </div>
+          )
+        }
+
+        <!-- Article content -->
+        <article class="prose prose-xl text-text-muted max-w-none">
+          <div
+            class="blog-content [&>blockquote]:text-text-muted [&>h2]:text-text-main [&>h3]:text-text-main [&>hr]:border-border-default [&>pre]:border-border-default [&>pre]:bg-surface-card [&>pre>code]:text-text-main [&_.hljs-built_in]:text-[#0066cc] dark:[&_.hljs-built_in]:text-[#66b3ff] [&_.hljs-string]:text-[#008800] dark:[&_.hljs-string]:text-[#88cc88] [&_a]:font-bold [&_a]:text-[var(--color-accent)] [&_a]:underline [&_a]:transition-opacity hover:[&_a]:opacity-80 [&>blockquote]:my-10 [&>blockquote]:border-l-4 [&>blockquote]:border-[var(--color-accent)] [&>blockquote]:pl-6 [&>blockquote]:text-lg [&>blockquote]:italic [&>h2]:mt-16 [&>h2]:mb-6 [&>h2]:text-4xl [&>h2]:font-bold [&>h3]:mt-12 [&>h3]:mb-4 [&>h3]:text-3xl [&>h3]:font-semibold [&>hr]:my-16 [&>hr]:border-0 [&>hr]:border-t [&>img]:my-10 [&>img]:h-auto [&>img]:max-w-full [&>img]:rounded-lg [&>li]:mb-3 [&>li]:leading-loose [&>ol]:my-8 [&>ol]:pl-8 [&>ol]:text-lg [&>p]:mb-8 [&>p]:text-lg [&>p]:leading-loose [&>pre]:my-10 [&>pre]:overflow-x-auto [&>pre]:rounded-lg [&>pre]:border [&>pre]:p-6 [&>pre>code]:font-mono [&>pre>code]:text-base [&>pre>code]:leading-relaxed [&>ul]:my-8 [&>ul]:pl-8 [&>ul]:text-lg"
+            set:html={post.content.html}
+          />
+        </article>
+
+        <!-- Like Button -->
+        <div class="mt-16">
+          <LikeButton slug={slug} />
+        </div>
+      </div>
+    </Section>
+
+    <Footer />
+  </body>
+</html>

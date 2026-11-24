@@ -1,0 +1,79 @@
+---
+/**
+ * Blog Card Component
+ * Individual blog card for the blog grid
+ */
+
+import Card from "../ui/Card.astro";
+import Badge from "../ui/Badge.astro";
+import Icon from "../ui/Icon.astro";
+const isDev = import.meta.env.DEV;
+import { siteConfig } from "../../config/site";
+
+interface Props {
+	slug: string;
+	title: string;
+	excerpt: string;
+	date: string;
+	readTime: string;
+	tags: string[];
+}
+
+let { slug, title, excerpt, date, readTime, tags } = Astro.props;
+date = new Date(date).toDateString();
+slug = isDev ? slug.replace(siteConfig.url, "") : slug;
+---
+
+<Card href={slug} class="blog_card">
+	<div class="space-y-4">
+		<!-- Header -->
+		<div class="flex items-start justify-between gap-4">
+			<h3
+				class="group-hover:text-accent text-xl font-bold text-[#0a0a0a] transition-colors dark:text-white"
+			>
+				{title}
+			</h3>
+		</div>
+
+		<!-- Meta info -->
+		<div
+			class="flex items-center gap-3 font-mono text-xs text-[#666] dark:text-white"
+		>
+			<span>{date}</span>
+			<span>&bull;</span>
+			<span>{readTime}m read</span>
+		</div>
+
+		<!-- Excerpt -->
+		<p class="text-sm leading-relaxed text-[#404040] dark:text-white/60">
+			{excerpt}
+		</p>
+
+		<!-- Tags -->
+		<div class="flex flex-wrap gap-2">
+			{
+				[...tags]
+					.sort(() => 0.5 - Math.random())
+					.slice(0, 3)
+					.map((tag: any) => <Badge size="sm">{tag.name}</Badge>)
+			}
+		</div>
+
+		<!-- Arrow indicator -->
+		<div
+			class="group-hover:text-accent flex items-center gap-2 text-sm font-medium text-[#666] transition-colors dark:text-white/40"
+		>
+			<span>Read article</span>
+			<Icon
+				name="arrow-right"
+				class="transition-transform group-hover:translate-x-1"
+			/>
+		</div>
+	</div>
+</Card>
+
+<style>
+	.group:hover .group-hover\:text-accent {
+		color: var(--color-accent);
+	}
+</style>

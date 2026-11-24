@@ -1,0 +1,34 @@
+---
+/**
+ * Card Component
+ * Reusable card container with hover effects and semantic colors
+ */
+
+interface Props {
+	href?: string;
+	class?: string;
+	hoverable?: boolean;
+}
+
+const { href, class: className = "", hoverable = true } = Astro.props;
+
+const baseStyles =
+	"block p-6 bg-surface-card border border-border-default";
+const hoverStyles = hoverable
+	? "hover:border-[#0a0a0a] dark:hover:border-white transition-all duration-300"
+	: "";
+
+const classes = `${baseStyles} ${hoverStyles} ${className}`;
+---
+
+{
+	href ? (
+		<a href={href} class={`${classes} group`}>
+			<slot />
+		</a>
+	) : (
+		<div class={classes}>
+			<slot />
+		</div>
+	)
+}
