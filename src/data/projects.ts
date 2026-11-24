@@ -128,7 +128,7 @@ export const projects = {
     longDescription:
       "PraiseJah is an EMR built for a clinic's daily flow. Secretaries and nurses check patients in and record vitals, the doctor's queue updates live over WebSockets, and lab results notify the requesting doctor the moment they are ready. Doctors document encounters as SOAP notes with auto-save, order labs, and write prescriptions. Access is split across seven roles, from super admin to pharmacist, and an audit log records clinical and administrative actions. It runs as a NestJS API with Prisma over PostgreSQL, Redis and BullMQ for background email jobs, and a React 19 front end, deployed with Docker Compose behind Nginx.",
     tags: ["NestJS", "PostgreSQL", "React", "Prisma", "Redis", "BullMQ"],
-    liveUrl: "",
+    liveUrl: "https://praisejah.health",
     githubUrl: "https://github.com/divineamunega/PraiseJah-HealthCare",
     imageUrl: "/projects/praisejah.png",
     videoUrl: "",
