@@ -1,47 +1,60 @@
-# Astro Starter Kit: Minimal
+# folio
+
+Source for [divinne.xyz](https://divinne.xyz), the portfolio of Divinne Amunega, a software engineer in Lagos building backend and AI-integrated systems. I'm currently building [PhishCore](https://phishcore.com).
+
+## Stack
+
+- **[Astro 5](https://astro.build)** with React 19 islands for the interactive parts
+- **Tailwind CSS 4** for styling, with GSAP and Lenis for scroll and entrance motion
+- **Cloudflare Workers** via `@astrojs/cloudflare`: project pages are prerendered, while the homepage, blog, and API routes run on the worker
+- **Redis** (`ioredis`) for blog post like counts, deduplicated by browser fingerprint
+- **dev.to API** as the blog source, cached for five minutes
+
+## Running locally
+
+Requires Node 20+ and [pnpm](https://pnpm.io).
 
 ```sh
-npm create astro@latest -- --template minimal
+pnpm install
+cp .env.example .env   # optional: only needed for blog likes
+pnpm dev               # http://localhost:4321
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+Without Redis the site still runs. Only the like counts on blog posts fail.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+| Command        | What it does                                 |
+| :------------- | :------------------------------------------- |
+| `pnpm dev`     | Dev server on `localhost:4321`               |
+| `pnpm build`   | Production build to `dist/`                  |
+| `pnpm preview` | Serve the production build locally           |
 
-## 🚀 Project Structure
+## Environment
 
-Inside of your Astro project, you'll see the following folders and files:
+| Variable          | Used for                    | Default                  |
+| :---------------- | :-------------------------- | :----------------------- |
+| `folio_REDIS_URL` | Blog likes (`/api/likes/*`) | `redis://localhost:6379` |
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+## Where the content lives
+
+Most edits are data, not markup:
+
+| File                       | Holds                                             |
+| :------------------------- | :------------------------------------------------ |
+| `src/config/site.ts`       | Name, title, meta description, social links, SEO  |
+| `src/data/projects.ts`     | Projects and their display order (`projectOrder`) |
+| `src/data/talks.ts`        | Conference talks for the Speaking section         |
+| `src/data/testimonials.ts` | References. Empty until real ones are added       |
+| `public/projects/`         | Project screenshots                               |
+
+Each entry in `projects.ts` generates a page at `/projects/<slug>`.
+
+Testimonials are deliberately empty. Only add a reference from a real person who agreed to give one and can be contacted. To show the section again, re-add `<Testimonials />` in `src/pages/index.astro`.
+
+## Deploying
+
+```sh
+pnpm build
+npx wrangler deploy
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Worker settings are in `wrangler.jsonc`.
